@@ -1,0 +1,68 @@
+# Java/Spring Boot
+/target/
+*.class
+*.jar
+*.war
+*.iml
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+.gradle-cache/
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.ipr
+*.iml
+out/
+*.log
+
+# VS Code
+.vscode/
+
+# MacOS, Windows
+.DS_Store
+Thumbs.db
+
+# OS/Tool-specific
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# 대용량 업로드 파일, 동영상, 썸네일
+uploads/
+media/
+static/videos/
+static/uploads/
+*.mp4
+*.mkv
+*.avi
+*.mov
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+
+# DB, 환경 파일, 민감 정보
+*.db
+*.sqlite
+*.sql
+.env
+application-dev.yml
+application-prod.yml
+application-local.yml
+application.yml
+
+# React/Node.js(프론트) - 필요시
+node_modules/
+npm-debug.log
+yarn-error.log
+build/
+dist/
+.env
+.env.*

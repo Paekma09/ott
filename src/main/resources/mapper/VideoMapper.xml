@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.ott.mapper.VideoMapper">
+
+  <!-- 컬럼-필드 자동 매핑 -->
+  <resultMap id="videoMap" type="com.example.ott.entity.Video">
+    <id property="id" column="id"/>
+    <result property="title" column="title"/>
+    <result property="description" column="description"/>
+    <result property="filePath" column="file_path"/>
+    <result property="thumbnailPath" column="thumbnail_path"/>
+    <result property="playTime" column="play_time"/>
+    <result property="uploadUserId" column="upload_user_id"/>
+    <result property="createdAt" column="created_at"/>
+  </resultMap>
+
+  <!-- 전체 동영상 목록(최신순) 조회 -->
+  <select id="findAll" resultMap="videoMap">
+    SELECT *
+    FROM video
+    ORDER BY created_at DESC
+  </select>
+
+  <!-- 동영상 상세 조회 -->
+  <select id="findById" parameterType="long" resultMap="videoMap">
+    SELECT *
+    FROM video
+    WHERE id = #{id}
+  </select>
+
+  <!-- 동영상 등록 -->
+  <insert id="insert" parameterType="com.example.ott.entity.Video" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO video (
+      title,
+      description,
+      file_path,
+      thumbnail_path,
+      play_time,
+      upload_user_id,
+      created_at
+    ) VALUES (
+      #{title},
+      #{description},
+      #{filePath},
+      #{thumbnailPath},
+      #{playTime},
+      #{uploadUserId},
+      NOW()
+    )
+  </insert>
+
+  <!-- 동영상 삭제 -->
+  <delete id="delete" parameterType="long">
+    DELETE
+    FROM video
+    WHERE id = #{id}
+  </delete>
+
+</mapper>
