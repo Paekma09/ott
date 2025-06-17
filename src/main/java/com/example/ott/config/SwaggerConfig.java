@@ -34,7 +34,7 @@ public class SwaggerConfig {
   @Bean
   public GroupedOpenApi userApi() {
     return GroupedOpenApi.builder()
-        .group("회원/인증 API")
+        .group("user-auth")
         .pathsToMatch("/api/users/**")
         .build();
   }
@@ -42,7 +42,7 @@ public class SwaggerConfig {
   @Bean
   public GroupedOpenApi videoApi() {
     return GroupedOpenApi.builder()
-        .group("동영상 API")
+        .group("video")
         .pathsToMatch("/api/videos/**")
         .build();
   }

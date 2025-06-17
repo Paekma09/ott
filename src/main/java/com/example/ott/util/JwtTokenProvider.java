@@ -43,6 +43,16 @@ public class JwtTokenProvider {
         .getSubject();
   }
 
+  /* JWT 토큰에서 role(권한) 추출 */
+  public String getRole(String token) {
+    return Jwts.parser()
+        .verifyWith(getKey())
+        .build()
+        .parseSignedClaims(token)
+        .getPayload()
+        .get("role", String.class);
+  }
+
   /* 토큰 유효성 검증 */
   public boolean validateToken(String token) {
     try {

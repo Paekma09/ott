@@ -36,49 +36,29 @@ public class SecurityConfig {
     return new BCryptPasswordEncoder();
   }
 
-  /* JWT 인증 */
-  public class JwtAuthFilter extends OncePerRequestFilter {
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-      String token = resolveToken(request);
-      if (token != null && jwtTokenProvider.validateToken(token)) {
-        String username = jwtTokenProvider.getUsername(token);
-        // 권한은 JWT에 있는 정보로 간단 처리 (Role/DB 연동 가능)
-        Authentication auth = new UsernamePasswordAuthenticationToken(
-            username, null, Collections.singleton(new SimpleGrantedAuthority("USER")));
-        SecurityContextHolder.getContext().setAuthentication(auth);
-      }
-      chain.doFilter(request, response);
-    }
-
-    private String resolveToken(HttpServletRequest request) {
-      String bearer = request.getHeader("Authorization");
-      if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")) {
-        return bearer.substring(7);
-      }
-      return null;
-    }
-  }
-
   /* Security Swagger 설정 */
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(
-                    "/swagger-ui/**",
-                    "/v3/api-docs/**",
-                    "/swagger-resources/**",
-                    "/webjars/**",
-                    "/api/users/signup",
-                    "/api/users/login",
-                    "/api/videos/file/stream/**"
-                ).permitAll()
-            .anyRequest().permitAll() // 개발 단계에서는 전체 허용 (운영시 적절히 수정)
+            // === [관리자만 접근 가능] ===
+            .requestMatchers("/api/admin/**").hasRole("ADMIN")
+            // === [회원/관리자만 접근 가능] ===
+            .requestMatchers("/api/users/my-info").hasAnyAuthority("USER","ADMIN")
+            // === [누구나 접근 가능: 로그인/회원가입/스트리밍/Swagger 등] ===
+            .requestMatchers(
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/swagger-resources/**",
+                "/api/users/signup",
+                "/api/users/login",
+                "/api/videos/file/stream/**"
+            ).permitAll()
+            // === [나머지는 로그인(인증) 필요] ===
+            .anyRequest().authenticated()
         )
-        .addFilterBefore(new JwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(new JwtAuthFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
 }
