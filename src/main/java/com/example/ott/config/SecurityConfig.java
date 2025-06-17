@@ -53,7 +53,9 @@ public class SecurityConfig {
                 "/swagger-resources/**",
                 "/api/users/signup",
                 "/api/users/login",
-                "/api/videos/file/stream/**"
+                "/api/videos/file/stream/**",
+                "/api/videos",
+                "/api/videos/**" // 파일 업로드는 인증 필요
             ).permitAll()
             // === [나머지는 로그인(인증) 필요] ===
             .anyRequest().authenticated()

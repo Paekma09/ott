@@ -23,10 +23,10 @@ public class VideoFileController {
   private final VideoFileService videoFileService;
 
   /* 동영상 파일 업로드 API */
-  @PostMapping("/upload")
+  @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @Operation(summary = "동영상 파일 업로드", description = "동영상 파일과 메타데이터를 업로드하고 DB에 등록합니다.")
   public ResponseEntity<?> uploadVideo(
-      @RequestPart("file") MultipartFile file,
+      @RequestParam("file") MultipartFile file,
       @RequestParam("title") String title,
       @RequestParam(value = "description", required = false) String description,
       @RequestParam("userId") String userId
