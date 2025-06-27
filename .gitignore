@@ -15,7 +15,6 @@ build/
 .idea/
 *.iws
 *.ipr
-*.iml
 out/
 *.log
 
@@ -31,7 +30,6 @@ Thumbs.db
 *.swo
 
 # Logs
-*.log
 
 # 대용량 업로드 파일, 동영상, 썸네일
 uploads/
@@ -54,7 +52,7 @@ static/uploads/
 *.sql
 .env
 application-dev.yml
-application-prod.yml
+application-prd.yml
 application-local.yml
 application.yml
 
@@ -62,7 +60,5 @@ application.yml
 node_modules/
 npm-debug.log
 yarn-error.log
-build/
 dist/
-.env
 .env.*
