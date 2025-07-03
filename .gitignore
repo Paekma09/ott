@@ -17,6 +17,7 @@ build/
 *.ipr
 out/
 *.log
+logs/
 
 # VS Code
 .vscode/
